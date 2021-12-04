@@ -14,8 +14,7 @@ async function start() {
 	const serviceInstance = container.getService( s => s.path == servicePath ).instance
 	
 	for(let i=0; i<5; i++){
-		res = await serviceInstance.execute({
-			command:"interval",
+		res = await serviceInstance.execute("interval",{
 			interval:(6-i)*1000, i
 		})
 		console.log(res)

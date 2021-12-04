@@ -1,18 +1,16 @@
 
 async function start() {
-	const { Container } = require("../../index")
-	const servicePath = require.resolve("./child")
+	const Container  = require("./lib//m-container")
+	const servicePath = require.resolve("./service")
 	const container = new Container()
 	container.hold(servicePath)
-	console.log(container.getService())
-	
 	const service = container.getService( s => s.path == servicePath )
 	const serviceInstance = await container.startInstance(service)
 	
 	try {
 		for(let i=0; i<5; i++){
 			res = await serviceInstance.execute("interval",{
-				interval:(6-i)*1000, 
+				interval: (6-i)*1000, 
 				i
 			})
 			console.log(res)

@@ -17,16 +17,16 @@ async function start() {
 	
 	await Promise.all([
 		Promise.all(([0,1,2]).map( async i => {
-			res = await service1Instance.execute({
-				command:"interval",
-				interval:(6-i)*1000, i
+			res = await service1Instance.execute("interval", {
+				interval:(6-i)*1000, 
+				i
 			})
 			console.log("SERVICE 1 >> ", res)
 		})),
 		Promise.all(([0,1,2]).map( async i => {
-			res = await service2Instance.execute({
-				command:"interval",
-				interval:(6-i)*1000, i
+			res = await service2Instance.execute("interval", {
+				interval:(6-i)*1000, 
+				i
 			})
 			console.log("SERVICE 2 >> ", res)
 		}))

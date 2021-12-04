@@ -11,7 +11,7 @@ const ControllerError = class extends Error {
 
 
 class Controller {
-	constructor(options = {commandIdProperty:"command"}){
+	constructor(options = {commandIdProperty:"_command"}){
 		this.options = options
 		this.callbacks = []	
 	}

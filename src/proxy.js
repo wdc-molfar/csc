@@ -15,7 +15,7 @@ module.exports = async function (options) {
 	let forkedProcess = await fork(options.path)
 	let _instance_id = options.id
 
-	forkedProcess.execute = command => new Promise ((resolve, reject) => {
+	forkedProcess.execute = (command, options) => new Promise ((resolve, reject) => {
 		
 		let _request_id = v4() 
 		
@@ -32,7 +32,7 @@ module.exports = async function (options) {
 		}
 		
 		forkedProcess.on("message", cb)
-		setTimeout( () => { forkedProcess.send( extend( {_request_id, _instance_id}, command) )},0)
+		setTimeout( () => { forkedProcess.send( extend( {_request_id, _instance_id}, { _command: command }, options ) )},0)
 	})
 
 	forkedProcess.terminate = () => { forkedProcess.kill()}	 
