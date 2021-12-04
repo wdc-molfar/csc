@@ -36,10 +36,4 @@ const deploy = async gitUrl => {
 
 }
 
-const run = async () => {
-	const deployment = await deploy("https://github.com/wdc-molfar/csc.git")
-	console.log(deployment) 
-}
-	
-	
-run()	
+module.exports = deploy
