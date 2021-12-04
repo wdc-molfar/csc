@@ -1,13 +1,16 @@
 
 async function start() {
 	const {Container}  = require("../../index")
-	
+	const path = require("path")
 	const servicePath = require.resolve("./service")
+
+	const DEPLOYMENT_DIR = path.resolve("./.deployment")
 	const gitUrl = "https://github.com/wdc-molfar/dummy-service.git"
 
 	const container = new Container()
 	
-	const deployedServicePath = await container.deploy(gitUrl)
+
+	const deployedServicePath = await container.deploy(gitUrl, DEPLOYMENT_DIR)
 	const deployed = container.getService( s => s.path == deployedServicePath )
 	const deployedInstance = await container.startInstance(deployed)
 

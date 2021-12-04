@@ -169,10 +169,8 @@ const deserializeError = function deserializeError(value, options = {}) {
 
 
 
-const DEPLOYMENT_DIR = path.resolve("./examples/04.molfar-ms/.deployment")
 
-
-const deploy = async gitUrl => {
+const deploy = async (gitUrl, DEPLOYMENT_DIR)  => {
 	
 	const REPO_DIR = path.resolve(
 		path.resolve(DEPLOYMENT_DIR),
