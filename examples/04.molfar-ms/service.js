@@ -1,11 +1,11 @@
 
-	const Service = require("./lib/m-service")
+	const {Service} = require("../../index")
 	const { extend } = require("lodash")
 
 	const service = new Service()
 
 	service
-		.onInit( (options, resolve) => {
+		.use("_init", (options, resolve) => {
 			
 			resolve( extend(
 				{}, 
@@ -19,7 +19,6 @@
 			))
 		
 		})
-
 		.use("interval", (message, resolve) => {
 			setTimeout(()=>{
 				resolve(extend({}, message, {response:{status:"processed"}}))

@@ -1,7 +1,7 @@
 const Proxy = require("./proxy")
 const {v4} = require("uuid")
 const {find, isFunction} = require("lodash")
-
+const {deploy} = require("./util")
 
 
 const ContainerError = class extends Error {
@@ -30,6 +30,12 @@ const Container = class {
 			throw new ContainerError(`Doublicate holds of "${servicePath}" is not available.`)
 		}
 		return this
+	}
+
+	async deploy(url) {
+		const deployment = await deploy(url)
+		this.hold(deployment.servicePath)
+		return deployment.servicePath
 	}
 
 	
