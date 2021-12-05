@@ -19,30 +19,47 @@ const Container = class {
 		this.#holder = []
 	}
 
-	hold(servicePath){
-		let service = find(this.#holder, s => s.path == servicePath)
-		if (!service){
-			this.#holder.push({
-				id:v4(),
-				path: servicePath
-			})
+	hold(servicePath, serviceName){
+		if( serviceName ) {
+			let service = find(this.#holder, s => s.name == serviceName)
+			if (!service){
+				this.#holder.push({
+					id:v4(),
+					path: servicePath,
+					name: serviceName
+				})
+			} else {
+				throw new ContainerError(`Doublicate holds of "${serviceName}" is not available.`)
+			}	
 		} else {
-			throw new ContainerError(`Doublicate holds of "${servicePath}" is not available.`)
+			let service = find(this.#holder, s => s.path == servicePath)
+			if (!service){
+				this.#holder.push({
+					id:v4(),
+					path: servicePath
+				})
+			} else {
+				throw new ContainerError(`Doublicate holds of "${servicePath}" is not available.`)
+			}	
 		}
+		
 		return this
 	}
 
-	async deploy(url, DEPLOYMENT_DIR) {
+	async deploy(url, DEPLOYMENT_DIR, name) {
 		const deployment = await deploy(url, DEPLOYMENT_DIR)
-		this.hold(deployment.servicePath)
+		this.hold(deployment.servicePath, name)
 		return deployment.servicePath
 	}
 
 	
 	getService(predicate){
-		predicate = (predicate && isFunction(predicate)) ? predicate : ( s => true )
-		const service = find(this.#holder, predicate)
-		return (service.length && service.length == 1) ? service[0] : service
+		if (predicate && isFunction(predicate)){
+			const service = find(this.#holder, predicate)
+			return (service.length && service.length == 1) ? service[0] : service	
+		} else {
+			return this.#holder
+		}
 	}
 
 	async startAll(){
