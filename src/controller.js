@@ -16,26 +16,26 @@ class Controller {
 		this.callbacks = []	
 	}
 
-	callback(command, masterProcess) {
+	callback(command, resolve) {
 
 		let executor = 	find(this.callbacks, item => item[this.options.commandIdProperty] == command[this.options.commandIdProperty]) 
 						|| 
 						{
 							callback: () => {
-								masterProcess.send(extend(command, {
-									response:{
+								resolve(extend(command, {
+									// response:{
 										error: serializeError( new ControllerError(`Command "${command[this.options.commandIdProperty]}" not found`))
-									}
+									// }
 								}
 							))}
 						}
 		try {
-			executor.callback(command, masterProcess)
+			executor.callback(command, resolve)
 		} catch (e) {
-			masterProcess.send(extend(command, {
-				response:{
+			resolve(extend(command, {
+				// response:{
 					error: serializeError(e)
-				}
+				// }
 			}))
 		}		
 	}

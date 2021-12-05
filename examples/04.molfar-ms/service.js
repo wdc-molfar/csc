@@ -7,17 +7,8 @@
 	service
 		.use("_init", (options, resolve) => {
 			
-			resolve( extend(
-				{}, 
-				options, 
-				{
-					response:
-						{
-							status:"initiated"
-						}
-					}
-			))
-		
+			resolve({status:"initiated"})
+					
 		})
 		.use("interval", (message, resolve) => {
 			setTimeout(()=>{

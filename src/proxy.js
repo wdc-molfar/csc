@@ -17,20 +17,20 @@ module.exports = async function (options) {
 	let _instance_name = options.name
 	let _instance_path = options.path
 
-	forkedProcess.execute = (command, options) => new Promise ((resolve, reject) => {
+	forkedProcess.execute = (command, options) => new Promise ( (resolve, reject) => {
 		
 		let _request_id = v4() 
 		
 		let cb;
 		cb = response => {
-			if(response._request_id == _request_id) {
-				if( response.response.error){
-					reject(new ServiceError( `on ${options.path} ( instance:${_instance_id} ) : ${deserializeError(response.response.error)}`))
+			// if(response._request_id == _request_id) {
+				if( response.error ){
+					reject(new ServiceError( `on ${_instance_path} ( instance:${_instance_id} ) : ${deserializeError(response.error)}`))
 				} else {
 					resolve(response)
 				}	
 				forkedProcess.removeListener("message", cb)
-			}	
+			// }	
 		}
 		
 		forkedProcess.on("message", cb)

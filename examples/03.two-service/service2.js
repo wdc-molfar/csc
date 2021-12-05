@@ -8,7 +8,7 @@
 		.use("interval", (message, resolve) => {
 			const interval = Math.round(Math.random()*3000+1000)
 			setTimeout(()=>{
-				resolve(extend({}, message, {response:{status:"processed", interval}}))
+				resolve({status:"processed", interval})
 			}, interval)
 
 		})
