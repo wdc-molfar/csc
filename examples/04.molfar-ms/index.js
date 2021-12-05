@@ -11,6 +11,7 @@ async function start() {
 	
 
 	const deployedServicePath = await container.deploy(gitUrl, DEPLOYMENT_DIR)
+	container.hold(deployedServicePath)
 	const deployed = container.getService( s => s.path == deployedServicePath )
 	const deployedInstance = await container.startInstance(deployed)
 

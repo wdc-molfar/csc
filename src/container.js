@@ -48,7 +48,7 @@ const Container = class {
 
 	async deploy(url, DEPLOYMENT_DIR, name) {
 		const deployment = await deploy(url, DEPLOYMENT_DIR)
-		this.hold(deployment.servicePath, name)
+		// this.hold(deployment.servicePath, name)
 		return deployment.servicePath
 	}
 
