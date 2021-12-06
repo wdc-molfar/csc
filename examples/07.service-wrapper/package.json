@@ -1,0 +1,16 @@
+{
+  "name": "07.service-wrapper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@molfar/amqp-client": "github:wdc-molfar/amqp-client",
+    "@molfar/csc": "github:wdc-molfar/csc",
+    "lodash": "^4.17.21"
+  }
+}

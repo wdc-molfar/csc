@@ -1,0 +1,34 @@
+msapi: "1.0.1"
+
+metadata: 
+  
+    id: task_queue.worker
+  
+    title: Споживач
+  
+    description: >
+        Описує сервіс споживання черги повідомлень. Повідомленя типізовані
+    
+service:
+    consume:
+        amqp:
+            url: "amqps://xoilebqg:Nx46t4t9cxQ2M0rF2rIyZPS_xbAhmJIG@hornet.rmq.cloudamqp.com/xoilebqg"
+        
+        queue:
+            name: test_task
+            exchange:
+                name: test_task
+                mode: direct
+            options:
+                prefetch: 1
+                noAck: false
+                
+        message:
+            type: object
+            required:
+                - timeout
+            properties:
+                id:
+                  type: number
+                timeout:
+                  type: number
