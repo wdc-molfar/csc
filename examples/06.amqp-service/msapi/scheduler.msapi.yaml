@@ -1,0 +1,28 @@
+msapi: "1.0.1"
+
+metadata: 
+  
+    id: task_queue.scheduler
+  
+    title: Планувальник завдань
+  
+    description: >
+        Описує сервіс публікувальника повідомлень. Повідомленя типізовані
+
+service:
+
+    produce:
+        amqp:
+            url: "amqps://xoilebqg:Nx46t4t9cxQ2M0rF2rIyZPS_xbAhmJIG@hornet.rmq.cloudamqp.com/xoilebqg"
+        
+        exchange:
+            name: test_task
+            mode: direct
+                
+        message:
+            type: object
+            required:
+                - timeout
+            properties:
+                timeout:
+                  type: number
