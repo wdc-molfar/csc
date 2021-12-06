@@ -17,6 +17,8 @@ module.exports = async function (options) {
 	let _instance_name = options.name
 	let _instance_path = options.path
 
+	forkedProcess.id = _instance_id 
+
 	forkedProcess.execute = (command, options) => new Promise ( (resolve, reject) => {
 		
 		let _request_id = v4() 

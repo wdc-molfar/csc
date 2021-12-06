@@ -79,13 +79,18 @@ const Container = class {
 	terminateInstance(service){
 		if( service.instance ) {
 				service.instance.terminate()
+		} else {
+			if (service.terminate) service.terminate()
 		}
+		let s = find(this.#holder, s => s.id == service.id)
+		s.instance = null
 	}
 
 	terminateAll(){
 		this.#holder.forEach( s => {
 			if( s.instance ) {
 				s.instance.terminate()
+				s.instance = null
 			}
 		})
 	}
