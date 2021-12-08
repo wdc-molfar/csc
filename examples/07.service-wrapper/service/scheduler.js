@@ -3,6 +3,7 @@
  
 
  let service = new Service({
+ 	
  	publisher: null,
  	interval: null,
  	config: null,

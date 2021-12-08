@@ -11,6 +11,15 @@ const ServiceError = class extends Error {
 }
 
 module.exports = async function (options) {
+
+	const RESERVED_NAMES = [
+		"id",
+		"on",
+		"send",
+		"removeListener",
+		"execute",
+		"terminate"
+	]
 	
 	let forkedProcess = await fork(options.path)
 	let _instance_id = options.id
@@ -48,6 +57,13 @@ module.exports = async function (options) {
 			}, 
 			options ) 
 		)},0)
+	})
+
+	let response  = await forkedProcess.execute("__exposed")
+	
+	response.data.forEach( method => {
+		if( RESERVED_NAMES.includes(method) ) throw new ServiceError(`Cannot expose "${method}" method. This is reserved name.`)
+		forkedProcess[method] = async data => await forkedProcess.execute(method, data) 
 	})
 
 	forkedProcess.terminate = () => { forkedProcess.kill()}	 

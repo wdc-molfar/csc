@@ -20,7 +20,7 @@ async function start() {
 	let instanceIndex = 0
 	try {
 		for(let i=0; i<5; i++){
-			res = await instances[instanceIndex].execute("interval",{
+			res = await instances[instanceIndex].interval({
 				interval:Math.round(Math.random()*2000+200), 
 				i
 			})

@@ -11,12 +11,15 @@ async function start() {
 	
 	try {
 		for(let i=0; i<5; i++){
-			res = await serviceInstance.execute("interval",{
-				interval:(6-i)*1000, 
-				i
+			res = await serviceInstance.interval({
+				interval: Math.round(Math.random()*3000+1000)
 			})
+			// res = await serviceInstance.execute("interval",{
+			// 	interval:(6-i)*1000, 
+			// 	i
+			// })
 			console.log(res)
-			console.log((6-i)*1000,"==",res.interval, res.i)
+			// console.log((res.interval, res.i)
 		}
 	} catch (e) {
 		console.log(e.toString())
