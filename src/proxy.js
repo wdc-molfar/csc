@@ -59,7 +59,7 @@ module.exports = async function (options) {
 		)},0)
 	})
 
-	let response  = await forkedProcess.execute("__exposed")
+	let response  = await forkedProcess.execute("__exported")
 	
 	response.data.forEach( method => {
 		if( RESERVED_NAMES.includes(method) ) throw new ServiceError(`Cannot expose "${method}" method. This is reserved name.`)
