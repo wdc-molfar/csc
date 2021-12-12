@@ -1,7 +1,7 @@
 const path = require("path")
 const { mkdirs } = require("fs-extra")
 const fs = require("fs")
-const exec = require('util').promisify(require('child_process').exec)
+// const exec = require('util').promisify(require('child_process').exec)
 
 
 const NonError = class extends Error {
@@ -170,7 +170,7 @@ const deserializeError = function deserializeError(value, options = {}) {
 
 
 
-const deploy = async (gitUrl, DEPLOYMENT_DIR)  => {
+const deploy = async (gitUrl, DEPLOYMENT_DIR)  => new Promise( (resolve, reject) => {
 	
 	const REPO_DIR = path.resolve(
 		path.resolve(DEPLOYMENT_DIR),
@@ -186,19 +186,24 @@ const deploy = async (gitUrl, DEPLOYMENT_DIR)  => {
 		fs.rmdirSync(REPO_DIR, {recursive: true})
 	}
 
+	const exec = require('child_process').exec
+	const p =  exec(`cd ${path.resolve(DEPLOYMENT_DIR)} & git clone ${gitUrl} & cd ${REPO_DIR} & npm i`)
+	p.stdout.pipe(process.stdout);
+	// p.stderr.on('data', function (data) {
+	//   reject(data.toString())
+	// })
+	p.on("exit", () => {
+		const servicePath = path.resolve(REPO_DIR, require(path.resolve(REPO_DIR,"./package.json")).main || "index.js")
+		resolve ({
+			repo: gitUrl,
+			servicePath,
+			stdout: p.stdout,
+			stderr: p.stderr
+		})	
+	})
+			
 
-	const { stdout, stderr } = await exec(`cd ${path.resolve(DEPLOYMENT_DIR)} & git clone ${gitUrl} & cd ${REPO_DIR} & npm i`)
-	
-	const servicePath = path.resolve(REPO_DIR, require(path.resolve(REPO_DIR,"./package.json")).main || "index.js")
-	
-	return {
-		repo: gitUrl,
-		servicePath,
-		stdout,
-		stderr
-	}		
-
-}
+})
 
 
 
