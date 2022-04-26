@@ -29,7 +29,12 @@ const Container = class {
 					name: serviceName
 				})
 			} else {
-				throw new ContainerError(`Doublicate holds of "${serviceName}" is not available.`)
+				service = {
+					id:v4(),
+					path: servicePath,
+					name: serviceName
+				} 
+				// throw new ContainerError(`Doublicate holds of "${serviceName}" is not available.`)
 			}	
 		} else {
 			let service = find(this.#holder, s => s.path == servicePath)
@@ -39,7 +44,11 @@ const Container = class {
 					path: servicePath
 				})
 			} else {
-				throw new ContainerError(`Doublicate holds of "${servicePath}" is not available.`)
+				service = {
+					id:v4(),
+					path: servicePath
+				}
+				// throw new ContainerError(`Doublicate holds of "${servicePath}" is not available.`)
 			}	
 		}
 		
@@ -49,7 +58,7 @@ const Container = class {
 	async deploy(url, DEPLOYMENT_DIR, name) {
 		const deployment = await deploy(url, DEPLOYMENT_DIR)
 		// this.hold(deployment.servicePath, name)
-		return deployment
+		return deployment //deployment.servicePath
 	}
 
 	
