@@ -188,23 +188,30 @@ const deploy = async (gitUrl, DEPLOYMENT_DIR)  => new Promise( (resolve, reject)
 
 	const exec = require('child_process').exec
 	const p =  exec(`cd ${path.resolve(DEPLOYMENT_DIR)} & git clone ${gitUrl} & cd ${REPO_DIR} & npm i`)
+
+	let out = ''
+	let err = ''
 	p.stdout.pipe(process.stdout);
-	// p.stderr.on('data', function (data) {
-	//   reject(data.toString())
-	// })
+
+	p.stderr.on('data', data =>{
+	  err += data.toString()
+	})
+	p.stdout.on('data', data =>{
+	  out += data.toString()
+	})
+	
 	p.on("exit", () => {
 		const servicePath = path.resolve(REPO_DIR, require(path.resolve(REPO_DIR,"./package.json")).main || "index.js")
 		resolve ({
 			repo: gitUrl,
 			servicePath,
-			stdout: p.stdout,
-			stderr: p.stderr
+			stdout: out,
+			stderr: err
 		})	
 	})
 			
 
 })
-
 
 
 module.exports = {
