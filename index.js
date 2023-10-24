@@ -6,6 +6,9 @@ const ServiceWrapper = require("./src/service-wrapper")
 // const createMonitor = require("./src/metrics")
 
 
+console.log("--- Use Molfar Child Services Container v.1.0.1 ---")
+
+
 module.exports = {
 	Container,
 	Service,
