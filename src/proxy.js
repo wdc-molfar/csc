@@ -45,6 +45,11 @@ module.exports = async function (options) {
 		}
 		
 		forkedProcess.on("message", cb)
+
+		forkedProcess.on("error", e => {
+			reject(e.toString())
+		})
+		
 		setTimeout( () => { forkedProcess.send( extend( {
 				_request_id, 
 				_instance_id,
