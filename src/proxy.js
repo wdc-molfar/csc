@@ -28,42 +28,50 @@ module.exports = async function (options) {
 
 	forkedProcess.id = _instance_id 
 
+	let resolveResult
+	let rejectResult
+
+	let cb = response => {
+				if( response.error ){
+					rejectResult(new ServiceError( `on ${_instance_path} ( instance:${_instance_id} ) : ${deserializeError(response.error)}`))
+				} else {
+					resolveResult(response)
+				}	
+		}
+		
+	forkedProcess.on("message", cb)
+	
+	forkedProcess.on("error", e => {
+		rejectResult(e.toString())
+	})
+
+
+
 	forkedProcess.execute = (command, options) => new Promise ( (resolve, reject) => {
 		
 		let _request_id = v4() 
+
+		resolveResult = resolve
+		rejectResult = reject
 		
-		let cb;
-		cb = response => {
-			// if(response._request_id == _request_id) {
-				if( response.error ){
-					reject(new ServiceError( `on ${_instance_path} ( instance:${_instance_id} ) : ${deserializeError(response.error)}`))
-				} else {
-					resolve(response)
-				}	
-				forkedProcess.removeListener("message", cb)
-			// }	
+		setTimeout( () => { 
+			
+				forkedProcess.send( extend( {
+					_request_id, 
+					_instance_id,
+					_instance_name,
+					_instance_path
+
+				}, 
+				{ 
+					_command: command 
+				}, 
+
+				options))
 		}
-		
-		forkedProcess.on("message", cb)
-
-		forkedProcess.on("error", e => {
-			reject(e.toString())
-		})
-		
-		setTimeout( () => { forkedProcess.send( extend( {
-				_request_id, 
-				_instance_id,
-				_instance_name,
-				_instance_path
-
-			}, 
-			{ 
-				_command: command 
-			}, 
-			options ) 
-		)},0)
+		,0)
 	})
-
+	
 	let response  = await forkedProcess.execute("__exported")
 	
 	response.data.forEach( method => {
